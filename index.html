@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我是楊邵棠</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+    * {
+    box-sizing: border-box;
+    }
+    
+    body {
+    margin: 0;
+    padding: 20px;
+    background-color: #111;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    }
+    
+    .container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    }
+    
+    .window {
+    background-color: #1a1a1a;
+    border: 4px solid #ff80c0;
+    box-shadow: 6px 6px 0 #ff4080;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    }
+    
+    .title-bar {
+    background-color: #ff80c0;
+    color: #000;
+    font-size: 12px;
+    padding: 4px 8px;
+    margin: -16px -16px 12px -16px;
+    border-bottom: 2px solid #ff4080;
+    }
+    
+    .profile {
+    grid-row: span 2;
+    text-align: center;
+    }
+    
+    .profile img {
+    width: 160px;
+    height: 160px;
+    image-rendering: pixelated;
+    border: 3px solid #ffccff;
+    background-color: #333;
+    margin-bottom: 12px;
+    }
+    
+    .gif-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    }
+    
+    .gif-container img {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 10px;
+    }
+    
+    h1 {
+    font-size: 16px;
+    color: #ffccff;
+    margin-bottom: 10px;
+    }
+    
+    p, li, a {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #ddd;
+    }
+    
+    ul {
+    padding-left: 20px;
+    list-style-type: square;
+    margin-bottom: 20px;
+    }
+    
+    a {
+    color: #80ffd0;
+    text-decoration: none;
+    }
+    
+    a:hover {
+    text-decoration: underline;
+    }
+    
+    #breakout-game {
+    width: 100%;
+    margin: 20px auto;
+    background-color: #1a1a1a;
+    border: 4px solid #ff80c0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    }
+    
+    #gameCanvas {
+    border: 2px solid #ff4080;
+    background-color: #000;
+    display: none; /* Hide canvas until game starts */
+    }
+    
+    #game-info {
+    color: #ffccff;
+    text-align: center;
+    margin-bottom: 10px;
+    }
+    
+    .outside-gif {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    }
+    
+    /* 新增 GIF 動畫效果 */
+    @keyframes slide {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+    }
+    
+    .skill-gif {
+    width: 99px;
+    height: 99px;
+    animation: slide 5s linear infinite;
+    display: block;
+    margin: 10px auto;
+    }
+    
+    /* Start button styling */
+    #startButton {
+    background-color: #ff80c0;
+    color: #000;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: 2px solid #ff4080;
+    cursor: pointer;
+    margin-bottom: 10px;
+    }
+    
+    #startButton:hover {
+    background-color: #ff4080;
+    color: #fff;
+    }
+    
+    @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+    }
+    .profile {
+      grid-row: auto;
+    }
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 左：頭像與簡介 -->
+    <div class="window profile">
+    <div class="title-bar">🧸 關於我</div>
+    <img src="ccccccc.jpg" alt="像素頭像">
+    <h1>嗨！我是小可愛</h1>
+    <p>🎀 喜歡像素畫、打打遊戲、深夜不睡覺滑手機。</p>
+    <p>🧃 有養一隻貓咪。</p>
+    <div class="gif-container">
+      <img src="88.gif" alt="88 GIF">
+    </div>
+    </div>
+    
+    <!-- 右上：技能 -->
+    <div class="window">
+    <div class="title-bar">🎮 優缺點</div>
+    <ul>
+      <li>缺點:脾氣暴躁,沒耐心</li>
+      <li>優點:我有醫療用的優碘</li>
+    </ul>
+    <img src="99.gif" alt="99 GIF" class="skill-gif">
+    </div>
+    
+    <!-- 右下：聯絡 -->
+    <div class="window">
+    <div class="title-bar">📬 聯絡方式 Contact</div>
+    <p>
+      📧 <a href="https://github.com/samuel0525">github</a><br>
+      📸 <a href="https://www.instagram.com/sl._0525/" target="_blank">Instagram</a><br>
+    </p>
+    </div>
+</div>
+
+<!-- 打磚塊遊戲 -->
+<div id="breakout-game">
+    <div>
+        <div id="game-info">打磚塊遊戲 - 用左右鍵移動</div>
+        <button id="startButton">開始遊戲</button>
+        <canvas id="gameCanvas" width="400" height="300"></canvas>
+    </div>
+</div>
+
+<!-- 外部GIF -->
+<div class="outside-gif">
+    <img src="99.gif" alt="99 GIF">
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const startButton = document.getElementById('startButton');
+
+// 遊戲設定
+const ballRadius = 10;
+let x = canvas.width / 2;
+let y = canvas.height - 30;
+let dx = 2;
+let dy = -2;
+
+const paddleHeight = 10;
+const paddleWidth = 75;
+let paddleX = (canvas.width - paddleWidth) / 2;
+
+const brickRowCount = 3;
+const brickColumnCount = 5;
+const brickWidth = 75;
+const brickHeight = 20;
+const brickPadding = 10;
+const brickOffsetTop = 30;
+const brickOffsetLeft = 30;
+
+let score = 0;
+let lives = 3;
+let gameStarted = false;
+
+// 磚塊陣列
+const bricks = [];
+for (let c = 0; c < brickColumnCount; c++) {
+    bricks[c] = [];
+    for (let r = 0; r < brickRowCount; r++) {
+        bricks[c][r] = { x: 0, y: 0, status: 1 };
+    }
+}
+
+// 繪製球
+function drawBall() {
+    ctx.beginPath();
+    ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = '#ff80c0';
+    ctx.fill();
+    ctx.closePath();
+}
+
+// 繪製板子
+function drawPaddle() {
+    ctx.beginPath();
+    ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+    ctx.fillStyle = '#80ffd0';
+    ctx.fill();
+    ctx.closePath();
+}
+
+// 繪製磚塊
+function drawBricks() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status === 1) {
+                const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                bricks[c][r].x = brickX;
+                bricks[c][r].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                ctx.fillStyle = '#ff4080';
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
+}
+
+// 碰撞偵測
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const b = bricks[c][r];
+            if (b.status === 1) {
+                if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    score++;
+                    if (score === brickRowCount * brickColumnCount) {
+                        alert('恭喜你！你贏了！');
+                        resetGame();
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 繪製分數
+function drawScore() {
+    ctx.font = '16px Press Start 2P';
+    ctx.fillStyle = '#ffccff';
+    ctx.fillText('分數: ' + score, 8, 20);
+}
+
+// 繪製生命
+function drawLives() {
+    ctx.font = '16px Press Start 2P';
+    ctx.fillStyle = '#ffccff';
+    ctx.fillText('生命: ' + lives, canvas.width - 100, 20);
+}
+
+// 重置遊戲
+function resetGame() {
+    gameStarted = false;
+    canvas.style.display = 'none';
+    startButton.style.display = 'block';
+    score = 0;
+    lives = 3;
+    x = canvas.width / 2;
+    y = canvas.height - 30;
+    dx = 2;
+    dy = -2;
+    paddleX = (canvas.width - paddleWidth) / 2;
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            bricks[c][r].status = 1;
+        }
+    }
+}
+
+// 主遊戲迴圈
+function draw() {
+    if (!gameStarted) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBricks();
+    drawBall();
+    drawPaddle();
+    drawScore();
+    drawLives();
+    collisionDetection();
+
+    // 牆壁碰撞
+    if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+        dx = -dx;
+    }
+    if (y + dy < ballRadius) {
+        dy = -dy;
+    } else if (y + dy > canvas.height - ballRadius) {
+        // 板子碰撞
+        if (x > paddleX && x < paddleX + paddleWidth) {
+            dy = -dy;
+        } else {
+            lives--;
+            if (!lives) {
+                alert('遊戲結束！');
+                resetGame();
+            } else {
+                x = canvas.width / 2;
+                y = canvas.height - 30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width - paddleWidth) / 2;
+            }
+        }
+    }
+
+    x += dx;
+    y += dy;
+
+    requestAnimationFrame(draw);
+}
+
+// 鍵盤控制
+document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyup', keyUpHandler);
+
+let rightPressed = false;
+let leftPressed = false;
+
+function keyDownHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = true;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key === 'Right' || e.key === 'ArrowRight') {
+        rightPressed = false;
+    } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
+        leftPressed = false;
+    }
+}
+
+// 板子移動
+function movePaddle() {
+    if (gameStarted) {
+        if (rightPressed && paddleX < canvas.width - paddleWidth) {
+            paddleX += 7;
+        } else if (leftPressed && paddleX > 0) {
+            paddleX -= 7;
+        }
+    }
+    requestAnimationFrame(movePaddle);
+}
+
+// 開始遊戲
+startButton.addEventListener('click', () => {
+    if (!gameStarted) {
+        gameStarted = true;
+        canvas.style.display = 'block';
+        startButton.style.display = 'none';
+        draw();
+    }
+});
+
+// 初始化
+movePaddle();
+</script>
+</body>
+</html>
